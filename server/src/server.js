@@ -1,0 +1,12 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
+app.use(express.json());
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/user', require('./routes/user'));
+app.use('/api/owner', require('./routes/owner'));
+app.use((err, req, res, next) => { console.error(err); res.status(500).json({ message: 'Server error' }); });
+app.listen(process.env.PORT || 5000, () => console.log('API running'));
